@@ -3,6 +3,7 @@ name: Experiments
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, edited]
     branches: '*'
 
 jobs:
@@ -11,7 +12,7 @@ jobs:
     steps:
       - name: Dump GitHub context
         env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-          PR_TITLE: ${{ github.event.pull_request.title }}
+          # GITHUB_CONTEXT: ${{ toJson(github) }}
           CONTAINS_BLOCKED_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'blocked') }}
+          IS_WIP_PR: ${{ startsWith(github.event.pull_request.title, '[WIP]') }}
         run: exit 0
