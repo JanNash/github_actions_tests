@@ -3,16 +3,15 @@ name: Experiments
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, edited, labeled, unlabeled]
+    types: [openend, synchronize, reopened, unlabeled]
     branches: '*'
 
 jobs:
   build:
     runs-on: macos-10.15
+    if: ${{ (github.event.action == 'unlabeled' && github.event.label.name == 'WIP') || (github.event.action != 'unlabeled' && !contains(github.event.pull_request.labels.*.name, 'WIP')) }}
     steps:
       - name: Dump GitHub context
         env:
-          # GITHUB_CONTEXT: ${{ toJson(github) }}
-          CONTAINS_BLOCKED_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'blocked') }}
-          IS_WIP_PR: ${{ startsWith(github.event.pull_request.title, '[WIP]') }}
+          GITHUB_CONTEXT: ${{ toJson(github) }}
         run: exit 0
