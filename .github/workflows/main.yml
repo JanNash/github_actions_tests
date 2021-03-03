@@ -3,13 +3,16 @@ name: Experiments
 
 on:
   pull_request:
-    types: [openend, synchronize, reopened, unlabeled]
+    types: [opened, synchronize, reopened, unlabeled]
     branches: '*'
+  push:
+    branches:
+      - foobar
 
 jobs:
   build:
-    runs-on: macos-10.15
-    if: ${{ (github.event.action == 'unlabeled' && github.event.label.name == 'WIP') || (github.event.action != 'unlabeled' && !contains(github.event.pull_request.labels.*.name, 'WIP')) }}
+    runs-on: ubuntu-latest
+    # if: ${{ (github.event.action == 'unlabeled' && github.event.label.name == 'WIP') || (github.event.action != 'unlabeled' && !contains(github.event.pull_request.labels.*.name, 'WIP')) }}
     steps:
       - name: Dump GitHub context
         env:
